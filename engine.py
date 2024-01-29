@@ -1,9 +1,9 @@
 import os
+import streamlit as st
 from newsapi import NewsApiClient
 from openai import OpenAI
 
 client = OpenAI()
-
 openai_api_key = os.getenv("OPENAI_API_KEY")
 newsapi = NewsApiClient(api_key='ad3002a4a81a4e6b8c656770d1461042')
 
@@ -12,6 +12,7 @@ all_articles = newsapi.get_everything(q='netflix',
                                       language='en',
                                       page_size=5)
 
+st.title('FinTech-GenAI')
 
 relevance_options = ["High", "Medium", "Low"]
 sentiment_options = ["High", "Medium", "Low"]
@@ -23,7 +24,6 @@ impact_options = ["Very Bullish", "Bullish",
 for article in all_articles['articles']:
     if article['content']:
         article_content = article['content']
-
         prompt = article_content
 
         response = client.chat.completions.create(model="gpt-3.5-turbo",
@@ -62,6 +62,11 @@ for article in all_articles['articles']:
                                                              }])
 
         report = response.choices[0].message.content
+
+        with st.container():
+            st.subheader(article['title'])
+            st.write(report)
+            st.markdown(f"[Read Article]({article['url']})", unsafe_allow_html=True)
 
         print(f"Title: {article['title']}")
         for line in report.split('\n'):
