@@ -5,10 +5,13 @@ ua = useragent()
 
 with open('proxies.txt', 'r') as file:
     for line in file:
-        proxies = line.split(" ")
+        host, port, username, password = line.strip().split(" ")
         ip, port, username, password = proxies.split(':')
-        proxies = {
-            'https': f'https://{username}:{password}@{ip}:{port}'
+        proxies = f"http://{username}:{password}@{host}:{port}"
+        
+        proxy = {
+            "http": proxies,
+            "https": proxies
         }
 
 def acc_creation(url):
