@@ -11,12 +11,11 @@ with open('proxies.txt', 'r') as file:
             'https': f'https://{username}:{password}@{ip}:{port}'
         }
 
-def make_request(url):
+def acc_creation(url):
     user_agent = ua.agent()
     headers = {'user-agent:}', user_agent}
     response = request.get(url, headers, proxies=proxies)
     return response 
 
-
 for proxie in proxies:
-    make_request('https://ubereats.com')
+    acc_creation('https://ubereats.com')
